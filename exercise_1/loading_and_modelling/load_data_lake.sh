@@ -1,22 +1,28 @@
-
+#!/bin/bash
 # Script to download > unzip > rename > standardize csv files (removing header) > loading date to hdfs
 
 # download
 
 flatfiles_url="https://data.medicare.gov/views/bg9k-emty/files/e514828f-8ed2-445f-b49f-5ac11a58869d?content_type=application%2Fzip%3B%20charset%3Dbinary&filename=Hospital_Revised_Flatfiles.zip"
+this_dir=$(pwd)
+mkdir data_prep
+cd data_prep
+mkdir download
+mkdir extracted
+cd $this_dir
 
-cd /home/w205/exercise_1/data_prep/download/
+cd $this_dir/data_prep/download/
 wget "$flatfiles_url" -O flatfiles.zip
 
 # unzip
 
-cd /home/w205/exercise_1/data_prep/
+cd $this_dir/data_prep/
 pwd
 unzip -o download/flatfiles.zip -d extracted/
 
 # move
 
-cd /home/w205/exercise_1/data_prep/extracted/
+cd $this_dir/data_prep/extracted/
 pwd
 mv "Hospital General Information.csv" ../../hospital_compare/hospitals.csv.pre
 mv "Timely and Effective Care - Hospital.csv" ../../hospital_compare/effective_care.csv.pre
@@ -26,7 +32,7 @@ mv "hvbp_hcahps_11_10_2016.csv" ../../hospital_compare/surveys_responses.csv.pre
 
 # remove header
 
-cd /home/w205/exercise_1/hospital_compare/
+cd $this_dir/hospital_compare/
 tail -n +2 hospitals.csv.pre > hospitals.csv
 tail -n +2 effective_care.csv.pre > effective_care.csv
 tail -n +2 readmissions.csv.pre > readmissions.csv
